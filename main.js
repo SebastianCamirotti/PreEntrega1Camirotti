@@ -1,54 +1,73 @@
-let user;
-let validOption = false;
-
-// Bucle para asegurarse de que el usuario ingrese una opción válida
-while (!validOption) {
-    user = prompt("Bievenido al simulador de prestamos. Seleccione una opción: 1) Prestamos sin interés. 2) Prestamos con interés. 3) Prestamo universitario.");
-
-    if (user === "1" || user === "2" || user === "3") {
-        validOption = true;
-    } else {
-        alert("Opción incorrecta. Por favor, seleccione una opción válida.");
+class Wallet {
+    constructor(income, expense){
+        this.income = income;
+        this.expense = expense;
     }
 }
 
-let salary = parseInt(prompt("Ingrese su sueldo en USD: "));
+//Objeto para manejar los movimientos de dinero que se hagan.
 
-if (user === "1") {
-    let amount = parseInt(prompt("Ingrese el monto que desea en USD: "));
-    if (salary > (amount) * 2) {
-        let payments = parseInt(prompt("Ingrese el numero de cuotas (hasta 3, sin interés): "));
-        let result = amount / payments;
-        alert(`Deberás pagar ${payments} cuotas de ${result} USD`);
-    } else if (salary < (amount) * 2) {
-        alert("Sueldo insuficiente para solicitar este préstamo.")
-    } else {
-        alert("Opción incorrecta.")
+class BudgetManager{
+    constructor(){
+        this.transactions = [];
+    }
+    addIncomes(){
+            let addMoreIncomes = true;
+            while(addMoreIncomes){
+                let ask = prompt("Desea agregar un ingreso? (si, no)")
+                if(ask == "si"){
+                    let income = parseFloat(prompt("Agregar ingreso: "));
+                    if (!isNaN(income)){
+                        this.transactions.push(income);
+                    }
+                    else {
+                        console.log("Ingrese un número válido.")
+                    }
+                }
+                else if (ask == "no"){
+                    break;
+                }
+                else{
+                    alert("Ingrese una opción válida.");
+                }
+            }
+    }
+
+    addExpenses(){
+            let addMoreExpenses = true;
+            while(addMoreExpenses) {
+                let ask = prompt("Desea agregar un gasto? (si, no)");
+                if(ask == "si"){
+                    let expense = parseFloat(prompt("Agregar gasto: "));
+                    if (!isNaN(expense)){
+                        this.transactions.push(-expense);
+                    }
+                    else{
+                        console.log("Ingrese un número válido.");
+                    }
+                }
+                else if (ask == "no"){
+                    break;
+                }
+                else{
+                    alert("Ingrese una opción válda.")
+                }
+            }
+    }
+    showTransactions(){
+        console.log("Transacciones realizadas: ");
+        this.transactions.forEach(transaction => {
+            console.log(transaction);
+        });
+    }
+    calculateBudget(){
+        let total = this.transactions.reduce((acc, curr) => acc + curr, 0);
+        console.log(`Transacciones realizadas: ${this.transactions}. El presupuesto total es ${total}`);
     }
 }
 
-if (user === "2") {
-    let amount = parseInt(prompt("Ingrese el monto que desea en USD: "));
-    if (salary > amount) {
-        let payments = parseInt(prompt("Ingrese el numero de cuotas (hasta 24, con 35% de interés): "));
-        let result = (amount / payments) + 0.35; // 35% de interés.
-        alert(`Deberás pagar ${payments} cuotas de ${result} USD`);
-    } else if (salary < (amount) * 2) {
-        alert("Sueldo insuficiente para solicitar este préstamo.")
-    } else {
-        alert("Opción incorrecta.")
-    }
-}
-
-if (user === "3") {
-    let amount = parseInt(prompt("Si sos estuidante universitario ingresa el monto que desea en USD: "));
-    if (salary > amount) {
-        let payments = parseInt(prompt("Ingrese el numero de cuotas (hasta 36, con 15% de interés): "));
-        let result = (amount / payments) + 0.15; // 15% de interés.
-        alert(`Deberás pagar ${payments} cuotas de ${result} USD. Acordate de presentar la constancia de estudios.`);
-    } else if (salary < (amount) * 2) {
-        alert("Sueldo insuficiente para solicitar este préstamo.")
-    } else {
-        alert("Opción incorrecta.")
-    }
-}
+const transaction = new BudgetManager();
+transaction.addIncomes();
+transaction.addExpenses();
+transaction.showTransactions();
+transaction.calculateBudget();
