@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Lato", sans-serif;
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+}
+
+.mes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between
+}
+
+.section {
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    max-width: 600px;
+}
+
+input{
+    margin: 10px;
+}
+
+.form-container {
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.total-budget{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    margin: 30px;
+    font-size: 2rem;
+}
+
+.transaction-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.transaction-item {
+    margin-bottom: 10px;
+    list-style: none;
+}
+
+.delete-transaction {
+    background-color: transparent;
+    border: none;
+    color: #f10b0b;
+    cursor: pointer;
+    border: none;
+}
+
+.delete-transaction:hover {
+    color: #f00;
+}
+

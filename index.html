@@ -3,9 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor Financiero</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="icon" type="image/png" href="images/presupuesto.png">
 </head>
 <body>
-    <script src="main.js"></script>
+    <h1 class="text-center mt-3">Gestor Financiero</h1>
+    <div class="mes">
+        <select class="form-control month-select">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2 class="title">Ingresos</h2>
+            <form class="form-container form-inline">
+                <input type="number" class="form-control income-input" placeholder="Monto">
+                <input type="text" class="form-control income-input" id="income-descripcion" placeholder="Descripción">
+                <button class="btn btn-success">Agregar Ingreso</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2 class="title">Gastos</h2>
+            <form class="form-container form-inline">
+                <input type="number" class="form-control expense-input" placeholder="Monto">
+                <input type="text" class="form-control expense-input" id="expense-descripcion"  placeholder="Descripción">
+                <button class="btn btn-danger">Agregar Gasto</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="section container mt-3">
+        <h2 class="title">Transacciones</h2>
+        <ul class="transaction-list">
+            <!-- Aquí se mostrarán las transacciones -->
+        </ul>
+    </div>
+
+    <div class="section mt-3">
+        <h2 class="title">Presupuesto Total</h2>
+        <p class="total-budget">Total: $0.00</p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
