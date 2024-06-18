@@ -3,20 +3,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const gastos = {};
     let totalPresupuesto = 0;
 
-    /* Cargar datos del archivo JSON */
-    fetch('transacciones.json')
-        .then(response => response.json())
-        .then(data => {
-            for (const mes in data) {
-                ingresos[mes] = data[mes].ingresos;
-                gastos[mes] = data[mes].gastos;
-            }
-            const mesSeleccionado = document.querySelector(".month-select").value;
-            actualizarTransacciones(mesSeleccionado);
-            actualizarPresupuesto(mesSeleccionado);
-        })
-        .catch(error => console.error('Error al cargar transacciones:', error));
+    // Cargar datos del archivo JSON solo si LocalStorage está vacío
+    function cargarDatosIniciales() {
+        if (!localStorage.getItem("ingresos") || !localStorage.getItem("gastos")) {
+            fetch('transacciones.json')
+                .then(response => response.json())
+                .then(data => {
+                    for (const mes in data) {
+                        ingresos[mes] = data[mes].ingresos || [];
+                        gastos[mes] = data[mes].gastos || [];
+                    }
+                    const mesSeleccionado = document.querySelector(".month-select").value;
+                    actualizarTransacciones(mesSeleccionado);
+                    actualizarPresupuesto(mesSeleccionado);
+                })
+                .catch(error => console.error('Error al cargar transacciones:', error));
+        } else {
+            cargarDatosDeLocalStorage();
+        }
+    }
 
+    // Agregar Ingreso
     document.querySelector(".btn-success").addEventListener("click", function (event) {
         event.preventDefault();
         let ingreso = parseFloat(document.querySelector(".income-input").value);
@@ -32,17 +39,17 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector(".income-input").value = "";
             document.querySelector("#income-descripcion").value = "";
 
-            /* Notificación Toastify ingreso agregado */
             Toastify({
                 text: "Ingreso agregado!",
                 duration: 3000,
                 style: {
                     background: "#97BE5A"
-                  }
+                }
             }).showToast();
         }
     });
 
+    // Agregar Gasto
     document.querySelector(".btn-danger").addEventListener("click", function (event) {
         event.preventDefault();
         let gasto = parseFloat(document.querySelector(".expense-input").value);
@@ -58,17 +65,17 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector(".expense-input").value = "";
             document.querySelector("#expense-descripcion").value = "";
 
-            /* Notificación Toastify gasto agregado */
             Toastify({
                 text: "Gasto agregado!",
                 duration: 3000,
                 style: {
                     background: "#FF0000"
-                  }
+                }
             }).showToast();
         }
     });
 
+    // Eliminar Transacción
     document.querySelector(".transaction-list").addEventListener("click", function (event) {
         if (event.target.classList.contains("delete-transaction")) {
             let indice = parseInt(event.target.getAttribute("data-indice"));
@@ -85,17 +92,17 @@ document.addEventListener("DOMContentLoaded", function () {
             actualizarPresupuesto(mesSeleccionado);
             guardarDatosEnLocalStorage();
 
-            /* Notificación Toastify transacción eliminada*/
             Toastify({
                 text: "Transacción eliminada!",
                 duration: 3000,
                 style: {
                     background: "#028391"
-                  }
+                }
             }).showToast();
         }
     });
 
+    // Actualizar Transacciones
     function actualizarTransacciones(mes) {
         let transaccionesHTML = "";
         if (ingresos[mes]) {
@@ -111,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".transaction-list").innerHTML = transaccionesHTML;
     }
 
+    // Actualizar Presupuesto
     function actualizarPresupuesto(mes) {
         let totalIngresos = ingresos[mes] ? ingresos[mes].reduce((total, ingreso) => total + ingreso.monto, 0) : 0;
         let totalGastos = gastos[mes] ? gastos[mes].reduce((total, gasto) => total + gasto.monto, 0) : 0;
@@ -118,26 +126,35 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".total-budget").textContent = `Total: $${totalPresupuesto.toFixed(2)}`;
     }
 
+    // Guardar en LocalStorage
     function guardarDatosEnLocalStorage() {
         localStorage.setItem("ingresos", JSON.stringify(ingresos));
         localStorage.setItem("gastos", JSON.stringify(gastos));
     }
 
+    // Cargar desde LocalStorage
     function cargarDatosDeLocalStorage() {
         let ingresosGuardados = localStorage.getItem("ingresos");
         let gastosGuardados = localStorage.getItem("gastos");
         if (ingresosGuardados) Object.assign(ingresos, JSON.parse(ingresosGuardados));
         if (gastosGuardados) Object.assign(gastos, JSON.parse(gastosGuardados));
+
+        const mesSeleccionado = document.querySelector(".month-select").value;
+        actualizarTransacciones(mesSeleccionado);
+        actualizarPresupuesto(mesSeleccionado);
     }
 
-    cargarDatosDeLocalStorage();
+    // Cargar los datos iniciales
+    cargarDatosIniciales();
 
+    // Cambio de mes
     document.querySelector(".month-select").addEventListener("change", function () {
         let mesSeleccionado = document.querySelector(".month-select").value;
         actualizarTransacciones(mesSeleccionado);
         actualizarPresupuesto(mesSeleccionado);
     });
 
+    // Inicializar con el mes seleccionado
     const mesInicial = document.querySelector(".month-select").value;
     actualizarTransacciones(mesInicial);
     actualizarPresupuesto(mesInicial);
